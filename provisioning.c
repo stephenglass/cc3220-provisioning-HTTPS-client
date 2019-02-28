@@ -120,30 +120,13 @@
 void setDeviceTime();
 
 pthread_t httpThread = (pthread_t)NULL;
-//pthread_t spawn_thread = (pthread_t)NULL;
 
-//int32_t mode;
-//Display_Handle display;
-
-extern void* httpTask(void* pvParameters);
-extern void httpTaskNonOS(void);
+//extern void* httpTask(void* pvParameters);
+//extern void httpTaskNonOS(void);
 
 extern void testDebugFunction(void);
 extern void* testDebugFunctionOS(void* pvParameters);
-
-/*
- *  ======== printError ========
- */
-/*void printError(char *errString,
-                int code)
-{
-    Display_printf(display, 0, 0, "Error! code = %d, Description = %s\n", code,
-                   errString);
-    while(1)
-    {
-        ;
-    }
-}*/
+extern void* httpPostTask(void* pvParameters);
 
 
 /* Application's states */
@@ -1344,7 +1327,7 @@ int32_t HandleUserApplication(void)
     gPingSuccess = 0;
 
     //httpTaskNonOS();
-    testDebugFunction();
+    //testDebugFunction();
 
     int32_t             status = 0;
     pthread_attr_t      pAttrs;
@@ -1353,7 +1336,7 @@ int32_t HandleUserApplication(void)
     priParam.sched_priority = 1;
     status = pthread_attr_setschedparam(&pAttrs, &priParam);
     status |= pthread_attr_setstacksize(&pAttrs, TASK_STACK_SIZE);
-    status = pthread_create(&httpThread, &pAttrs, testDebugFunctionOS, NULL);
+    status = pthread_create(&httpThread, &pAttrs, httpPostTask, NULL);
     if(status)
     {
         LOG_MESSAGE("Task create failed!");

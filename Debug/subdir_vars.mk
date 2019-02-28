@@ -11,7 +11,7 @@ CMD_SRCS += \
 C_SRCS += \
 ../CC3220S_LAUNCHXL.c \
 ../external_provisioning_conf.c \
-../httpget.c \
+../http_push.c \
 ../main_freertos.c \
 ../provisioning.c \
 ../test_debug.c \
@@ -21,7 +21,7 @@ C_SRCS += \
 C_DEPS += \
 ./CC3220S_LAUNCHXL.d \
 ./external_provisioning_conf.d \
-./httpget.d \
+./http_push.d \
 ./main_freertos.d \
 ./provisioning.d \
 ./test_debug.d \
@@ -31,7 +31,7 @@ C_DEPS += \
 OBJS += \
 ./CC3220S_LAUNCHXL.obj \
 ./external_provisioning_conf.obj \
-./httpget.obj \
+./http_push.obj \
 ./main_freertos.obj \
 ./provisioning.obj \
 ./test_debug.obj \
@@ -41,7 +41,7 @@ OBJS += \
 OBJS__QUOTED += \
 "CC3220S_LAUNCHXL.obj" \
 "external_provisioning_conf.obj" \
-"httpget.obj" \
+"http_push.obj" \
 "main_freertos.obj" \
 "provisioning.obj" \
 "test_debug.obj" \
@@ -51,7 +51,7 @@ OBJS__QUOTED += \
 C_DEPS__QUOTED += \
 "CC3220S_LAUNCHXL.d" \
 "external_provisioning_conf.d" \
-"httpget.d" \
+"http_push.d" \
 "main_freertos.d" \
 "provisioning.d" \
 "test_debug.d" \
@@ -61,7 +61,7 @@ C_DEPS__QUOTED += \
 C_SRCS__QUOTED += \
 "../CC3220S_LAUNCHXL.c" \
 "../external_provisioning_conf.c" \
-"../httpget.c" \
+"../http_push.c" \
 "../main_freertos.c" \
 "../provisioning.c" \
 "../test_debug.c" \
