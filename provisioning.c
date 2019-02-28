@@ -32,15 +32,14 @@
 
 /*****************************************************************************
 
-   Application Name     - Provisioning application
-   Application Overview - This application demonstrates how to use 
-                          the provisioning method
-                        in order to establish connection to the AP.
-                        The application
-                        connects to an AP and ping's the gateway to
-                        verify the connection.
+   Application Name     - WiFi monitor application
+   Application Overview - Uses AP provisioning method to apply profiles via
+                          internal HTTP server. If provisioned and able to
+                          connect, it will send HTTP post payloads to server.
 
-   Application Details  - Refer to 'Provisioning' README.html
+  Author information    - Modified by Stephen Glass (02/28/2019)
+                          Added HTTPS client functionality
+
 
 *****************************************************************************/
 //****************************************************************************
@@ -68,12 +67,14 @@
 #include "external_provisioning_conf.h"
 
 #include <ti/drivers/net/wifi/slnetifwifi.h>
-//#include <ti/display/Display.h>
 #include "semaphore.h"
 
 /* Application Version and Naming*/
-#define APPLICATION_NAME         "PROVISIONING and HTTPS"
-#define APPLICATION_VERSION "01.00.00.14"
+#define APPLICATION_NAME    "WiFi Solar Monitor"
+#define APPLICATION_VERSION "01.00.00.00"
+
+#define SLNET_IF_WIFI_PRIO                    (5)
+#define SLNET_IF_WIFI_NAME                    "CC32xx"
 
 /* USER's defines */
 #define SPAWN_TASK_PRIORITY                     (9)
@@ -120,9 +121,6 @@
 void setDeviceTime();
 
 pthread_t httpThread = (pthread_t)NULL;
-
-//extern void* httpTask(void* pvParameters);
-//extern void httpTaskNonOS(void);
 
 extern void testDebugFunction(void);
 extern void* testDebugFunctionOS(void* pvParameters);
@@ -709,6 +707,16 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent)
     switch(pNetAppEvent->Id)
     {
     case SL_NETAPP_EVENT_IPV4_ACQUIRED:
+
+        /* Initialize SlNetSock layer with CC3x20 interface                   */
+        SlNetIf_init(0);
+        SlNetIf_add(SLNETIF_ID_1, SLNET_IF_WIFI_NAME,
+                   (const SlNetIf_Config_t *)&SlNetIfConfigWifi,
+                    SLNET_IF_WIFI_PRIO);
+
+        SlNetSock_init(0);
+        SlNetUtil_init(0);
+
         LOG_MESSAGE("[NETAPP EVENT] IP Acquired: IP=%d.%d.%d.%d , "
             "Gateway=%d.%d.%d.%d\n\r",
             SL_IPV4_BYTE(pNetAppEvent->Data.IpAcquiredV4.Ip,3),
@@ -736,6 +744,9 @@ void SimpleLinkNetAppEventHandler(SlNetAppEvent_t *pNetAppEvent)
         LOG_MESSAGE("[NETAPP Event] IP acquired timeout \r\n");
         break;
 
+    case SL_NETAPP_EVENT_HTTP_TOKEN_POST:
+        LOG_MESSAGE("[NETAPP Event] HTTP POST");
+        break;
 
     default:
         LOG_MESSAGE("[NETAPP EVENT] Unhandled event [0x%x] \n\r",

@@ -1,6 +1,6 @@
-## Example Summary
+## Summary
 
-This example introduce the user to simple provisioning configuration on CC32xx devices.
+Allows AP provisioning on CC3220 device. If device is provisioned, adds task to task scheduler to enable HTTPS client and POST to a web server.
 
 ## Peripherals Exercised
 
@@ -9,7 +9,7 @@ This example introduce the user to simple provisioning configuration on CC32xx d
 * `Board_LED2` - Led on indicates error occurred
 and while blinking, indicates that the board is trying to connect to AP.
 
-## Example Usage
+## Usage
 
 
 * Build the project and flash from the debugger or by using the SimpleLink Uniflash 
@@ -18,13 +18,9 @@ and while blinking, indicates that the board is trying to connect to AP.
   - set Port Number to 443
   - Make sure Rom Pages are enabled
   - Enable secondary port and set to 80
-  - In case of using the certificate playground (tools\cc32xx_tools\certificate-playground):
-    Set certificate file name to: dummy-root-ca-cert 
-    Set HTTP server private key: dummy-root-ca-cert-key
-    Set mcu image certificate to: dummy-trusted-ca-cert and key to dummy-trusted-ca-cert-key
 
 
-* Open a serial session (e.g. `HyperTerminal`,`puTTY`, etc.) to the appropriate COM port.
+* Open a serial session (e.g. `HyperTerminal`,`puTTY`,`Tera Term`, etc.) to the appropriate COM port.
 > The COM port can be determined via Device Manager in Windows or via `ls /dev/tty*` in Linux.
 
 The connection should have the following settings
@@ -36,7 +32,7 @@ The connection should have the following settings
     Flow Control: None
 ```
 
-* The example starts by showing on the terminal the application name and tries to establish connection with existing profiles.
+* The program starts by showing on the terminal the application name and tries to establish connection with existing profiles.
 If connection is not establish during preconfigured time out, provisioning will start, wait for connection to be established and IP acquire.
 After connection is establish Ping is continuously sent to default gateway to verify the connection.
 
@@ -48,10 +44,10 @@ The process begins with the configuration stage. During this stage, the SimpleLi
 (using an external device such as a smartphone or tablet running a dedicated provisioning application) the information needed to connect to 
 the wireless network as follows:  
 
-•  Network name (SSID)  
-•  Password  
-•  Device name (optional)  
-•  UUID (optional)  
+* Network name (SSID)  
+* Password  
+* Device name (optional)  
+* UUID (optional)  
 
 The device internally saves the provided network information into its serial flash memory as a new profile. Once a profile is successfully configured, 
 the device moves to the confirmation stage. The confirmation stage tests the profile that was configured during the configuration stage. 
@@ -62,6 +58,18 @@ If the connection is successful, and the feedback is delivered to the user, the 
 If the connection attempt fails, or if it is successful but the feedback is not delivered to the user, the confirmation stage fails, 
 and the device moves back to the configuration stage. At this point, the user’s smart phone provisioning app can ask the device to send the fail reason 
 of the previous confirmation attempt, and configure a new profile.
+
+## HTTPS Client
+
+The HTTPS Client is managed in the `http_push.c` source file. The definitions of `HOST_NAME`,`HOST_URI`,`POST_DATA`,`SSL_CA_CERT` should correspond with the users desired configuration. The HTTP clint task is initiated from the `HandleUserApplication()` function in the `provisioning.c` source file. This function should be used to initiate any additional user tasks. The HTTPS client negotiates SSL protocol with the web server - for information on setting up secure SSL read the SSL/Certificates section.
+
+## SSL/Certificates
+If attempting secure HTTPS connection, only few items must be modified and implemented:
+* Set device time
+* Flash Root CA on CC3220 using UniFlash
+* Specify Root CA in `http_push.c` source file
+
+The device time must be set in order to validate the Root CA. The function `setDeviceTime()` in `provisioning.c` should be modified accordingly. The Root CA for the server attempting to negotiate with must be flashed onto the device. The Root CA may be found using some tools such as ssltools.com or OpenSSL. The Root CA can be exported as DER format (must be DER) using OpenSSL or Firefox (Chrome does not export DER). Using UniFlash, you can flash the certificate as a user file. The flashed file path should be specified in the `http_push.c` source file.
 
 ## External Configuration
 

@@ -19,6 +19,7 @@
 
 #define HOSTNAME              "stephen.glass:443"
 #define REQUEST_URI           "/monitor/testPost.php"
+
 #define USER_AGENT            "HTTPClient (ARM; TI-RTOS)"
 #define HTTP_MIN_RECV         (256)
 
@@ -42,7 +43,7 @@ void* httpPostTask(void *pvParameters) {
     int16_t ret = 0;
     int16_t len = 0;
 
-    LOG_MESSAGE("Sending a HTTPS POST request to '%s'\n", HOSTNAME);
+    LOG_MESSAGE("Sending a HTTPS POST request to '%s'\r\n", HOSTNAME);
 
     HTTPClient_Handle httpClientHandle;
     int16_t statusCode;
@@ -88,7 +89,7 @@ void* httpPostTask(void *pvParameters) {
         printError("httpTask: cannot get status", ret);
     }
 
-    LOG_MESSAGE("HTTPS Response Code: %d\n", ret);
+    LOG_MESSAGE("HTTPS Response Code: %d\r\n", ret);
 
     len = 0;
     do
@@ -104,7 +105,7 @@ void* httpPostTask(void *pvParameters) {
     }
     while(moreDataFlag);
 
-    LOG_MESSAGE("Received %d bytes of payload\n", len);
+    LOG_MESSAGE("Received %d bytes of payload\r\n", len);
 
     ret = HTTPClient_disconnect(httpClientHandle);
     if(ret < 0)
