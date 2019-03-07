@@ -13,9 +13,11 @@
 
 void testDebugFunction(void) {
     LOG_MESSAGE("Testing this debug function!");
+    return;
 }
 
 
 void* testDebugFunctionOS(void* pvParameters) {
     LOG_MESSAGE("Testing this OS debug function!");
+    return;
 }

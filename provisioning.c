@@ -126,6 +126,9 @@ extern void testDebugFunction(void);
 extern void* testDebugFunctionOS(void* pvParameters);
 extern void* httpPostTask(void* pvParameters);
 
+extern void assertChipSelect(bool transferState);
+extern void* testSPITask(void* pvParameters);
+
 
 /* Application's states */
 typedef enum
@@ -1926,6 +1929,8 @@ void * mainThread( void *arg )
     GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_OFF);
     GPIO_write(Board_GPIO_LED1, Board_GPIO_LED_OFF);
     GPIO_write(Board_GPIO_LED2, Board_GPIO_LED_OFF);
+
+    assertChipSelect(0); // Set HIGH to turn off AFE CS
 
     /* create the sl_Task */
     pthread_attr_init(&pAttrs_spawn);

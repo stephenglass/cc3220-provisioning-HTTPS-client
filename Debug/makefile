@@ -15,6 +15,7 @@ ORDERED_OBJS += \
 "./http_push.obj" \
 "./main_freertos.obj" \
 "./provisioning.obj" \
+"./spi_test.obj" \
 "./test_debug.obj" \
 "./ti_drivers_net_wifi_Config.obj" \
 "./uart_term.obj" \
@@ -177,8 +178,8 @@ solarMonitor_CC3220S_LAUNCHXL_freertos_ccs.bin: $(EXE_OUTPUTS)
 # Other Targets
 clean:
 	-$(RM) $(BIN_OUTPUTS__QUOTED)$(EXE_OUTPUTS__QUOTED)
-	-$(RM) "CC3220S_LAUNCHXL.obj" "external_provisioning_conf.obj" "http_push.obj" "main_freertos.obj" "provisioning.obj" "test_debug.obj" "ti_drivers_net_wifi_Config.obj" "uart_term.obj" 
-	-$(RM) "CC3220S_LAUNCHXL.d" "external_provisioning_conf.d" "http_push.d" "main_freertos.d" "provisioning.d" "test_debug.d" "ti_drivers_net_wifi_Config.d" "uart_term.d" 
+	-$(RM) "CC3220S_LAUNCHXL.obj" "external_provisioning_conf.obj" "http_push.obj" "main_freertos.obj" "provisioning.obj" "spi_test.obj" "test_debug.obj" "ti_drivers_net_wifi_Config.obj" "uart_term.obj" 
+	-$(RM) "CC3220S_LAUNCHXL.d" "external_provisioning_conf.d" "http_push.d" "main_freertos.d" "provisioning.d" "spi_test.d" "test_debug.d" "ti_drivers_net_wifi_Config.d" "uart_term.d" 
 	-@echo 'Finished clean'
 	-@echo ' '
 

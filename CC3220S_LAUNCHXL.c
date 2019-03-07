@@ -247,6 +247,8 @@ GPIO_PinConfig gpioPinConfigs[] = {
     GPIOCC32XX_GPIO_12 | GPIO_DO_NOT_CONFIG, /* SPI chip select */
     GPIOCC32XX_GPIO_06 | GPIO_DO_NOT_CONFIG, /* LCD power control */
     GPIOCC32XX_GPIO_03 | GPIO_DO_NOT_CONFIG, /*LCD enable */
+
+    GPIOCC32XX_GPIO_10 | GPIO_CFG_OUT_STD | GPIO_CFG_OUT_STR_HIGH | GPIO_CFG_OUT_LOW, /* Analog front-end chip select */
 };
 
 /*
