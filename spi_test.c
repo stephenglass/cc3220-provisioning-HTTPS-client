@@ -19,7 +19,7 @@
 #define LOG_MESSAGE_ENABLE
 #define LOG_MESSAGE UART_PRINT
 
-#define MSGSIZE 64
+#define MSGSIZE 16
 
 #define AFE_CS_HIGH (1)
 #define AFE_CS_LOW  (0)
@@ -31,8 +31,10 @@ uint8_t         transmitBuffer[MSGSIZE];
 uint8_t         receiveBuffer[MSGSIZE];
 bool            transferOK;
 
+SPI_TransferMode transferMode;
+
 void assertChipSelect(unsigned int transferState) {
-    LOG_MESSAGE("Asserting CS state: %d", transferState);
+    LOG_MESSAGE("Asserting CS state: %d\r\n", transferState);
     GPIO_write(Board_GPIO_AFE_CS, transferState);
     return;
 }
@@ -46,6 +48,8 @@ void* testSPITask(void *pvParameters) {
 
     SPI_Params_init(&spiParams);  // Initialize SPI parameters
     spiParams.dataSize = 8;       // 8-bit data size
+    transferMode = SPI_MODE_BLOCKING;
+    spiParams.transferMode = transferMode;
     spi = SPI_open(Board_SPI0, &spiParams);
     if (spi == NULL) {
         while (1);  // SPI_open() failed
@@ -59,6 +63,22 @@ void* testSPITask(void *pvParameters) {
         // Error in SPI or transfer already in progress.
         while (1);
     }
+
+    LOG_MESSAGE("SPI Receive: %s\r\n", &spiTransaction.rxBuf);
+    //LOG_MESSAGE(spiTransaction.rxBuf);
+    //LOG_MESSAGE("RECEIVE2: %s", receiveBuffer);
+
+    LOG_MESSAGE("Iterating indices:\r\n");
+    uint8_t index = 0;
+    while(index < MSGSIZE) {
+        LOG_MESSAGE("%d", receiveBuffer[index]);
+        index++;
+    }
+
+    //for(uint8_t index = 0; index < 32; index++) {
+    //    LOG_MESSAGE("%d", receiveBuffer[index]);
+    //}
+    //LOG_MESSAGE("SPI Receive2: %s", *spiTransaction.rxBuf);
 
     assertChipSelect(AFE_CS_HIGH); // Disable AFE Chip select
     return(0);

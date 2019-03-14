@@ -1350,7 +1350,8 @@ int32_t HandleUserApplication(void)
     priParam.sched_priority = 1;
     status = pthread_attr_setschedparam(&pAttrs, &priParam);
     status |= pthread_attr_setstacksize(&pAttrs, TASK_STACK_SIZE);
-    status = pthread_create(&httpThread, &pAttrs, httpPostTask, NULL);
+    //status = pthread_create(&httpThread, &pAttrs, httpPostTask, NULL);
+    status = pthread_create(&httpThread, &pAttrs, testSPITask, NULL);
     if(status)
     {
         LOG_MESSAGE("Task create failed!");
@@ -1930,7 +1931,7 @@ void * mainThread( void *arg )
     GPIO_write(Board_GPIO_LED1, Board_GPIO_LED_OFF);
     GPIO_write(Board_GPIO_LED2, Board_GPIO_LED_OFF);
 
-    assertChipSelect(0); // Set HIGH to turn off AFE CS
+    assertChipSelect(1); // Set HIGH to turn off AFE CS
 
     /* create the sl_Task */
     pthread_attr_init(&pAttrs_spawn);
