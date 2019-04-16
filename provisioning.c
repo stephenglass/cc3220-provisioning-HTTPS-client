@@ -71,7 +71,7 @@
 
 /* Application Version and Naming*/
 #define APPLICATION_NAME    "WiFi Solar Monitor"
-#define APPLICATION_VERSION "01.00.00.00"
+#define APPLICATION_VERSION "01.00.00.01"
 
 #define SLNET_IF_WIFI_PRIO                    (5)
 #define SLNET_IF_WIFI_NAME                    "CC32xx"
@@ -128,6 +128,7 @@ extern void* httpPostTask(void* pvParameters);
 
 extern void assertChipSelect(bool transferState);
 extern void* testSPITask(void* pvParameters);
+extern void* configurePWM(void* pvParameters);
 
 
 /* Application's states */
@@ -1930,6 +1931,22 @@ void * mainThread( void *arg )
     GPIO_write(Board_GPIO_LED0, Board_GPIO_LED_OFF);
     GPIO_write(Board_GPIO_LED1, Board_GPIO_LED_OFF);
     GPIO_write(Board_GPIO_LED2, Board_GPIO_LED_OFF);
+
+
+    GPIO_write(Board_GPIO_AFE_RESET, 1); // Set AFE reset HIGH (Active low)
+
+    int32_t             status = 0;
+    pthread_attr_t      pAttrsNew;
+    struct sched_param  priParamNew;
+    pthread_attr_init(&pAttrsNew);
+    priParam.sched_priority = 1;
+    status = pthread_attr_setschedparam(&pAttrsNew, &priParamNew);
+    status |= pthread_attr_setstacksize(&pAttrsNew, TASK_STACK_SIZE);
+    status = pthread_create(&httpThread, &pAttrsNew, configurePWM, NULL);
+    if(status)
+    {
+        LOG_MESSAGE("Task create failed!");
+    }
 
     assertChipSelect(1); // Set HIGH to turn off AFE CS
 

@@ -10,6 +10,7 @@ CMD_SRCS += \
 
 C_SRCS += \
 ../CC3220S_LAUNCHXL.c \
+../afe_pwm.c \
 ../external_provisioning_conf.c \
 ../http_push.c \
 ../main_freertos.c \
@@ -21,6 +22,7 @@ C_SRCS += \
 
 C_DEPS += \
 ./CC3220S_LAUNCHXL.d \
+./afe_pwm.d \
 ./external_provisioning_conf.d \
 ./http_push.d \
 ./main_freertos.d \
@@ -32,6 +34,7 @@ C_DEPS += \
 
 OBJS += \
 ./CC3220S_LAUNCHXL.obj \
+./afe_pwm.obj \
 ./external_provisioning_conf.obj \
 ./http_push.obj \
 ./main_freertos.obj \
@@ -43,6 +46,7 @@ OBJS += \
 
 OBJS__QUOTED += \
 "CC3220S_LAUNCHXL.obj" \
+"afe_pwm.obj" \
 "external_provisioning_conf.obj" \
 "http_push.obj" \
 "main_freertos.obj" \
@@ -54,6 +58,7 @@ OBJS__QUOTED += \
 
 C_DEPS__QUOTED += \
 "CC3220S_LAUNCHXL.d" \
+"afe_pwm.d" \
 "external_provisioning_conf.d" \
 "http_push.d" \
 "main_freertos.d" \
@@ -65,6 +70,7 @@ C_DEPS__QUOTED += \
 
 C_SRCS__QUOTED += \
 "../CC3220S_LAUNCHXL.c" \
+"../afe_pwm.c" \
 "../external_provisioning_conf.c" \
 "../http_push.c" \
 "../main_freertos.c" \

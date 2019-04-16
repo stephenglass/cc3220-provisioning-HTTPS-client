@@ -59,6 +59,7 @@ extern "C" {
 #define Board_GPIO_LED0              CC3220S_LAUNCHXL_GPIO_LED_D10
 
 #define Board_GPIO_AFE_CS            CC3220S_LAUNCHXL_AFE_CS
+#define Board_GPIO_AFE_RESET         CC3220S_LAUNCHXL_AFE_RESET
 
 /*
  *  CC3220S_LAUNCHXL_GPIO_LED_D8 and CC3220S_LAUNCHXL_GPIO_LED_D9 are shared with the I2C
